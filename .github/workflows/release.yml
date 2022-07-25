@@ -4,6 +4,8 @@ on:
 
   workflow_dispatch:
 
+name: Release
+
 jobs:
   check-commit:
     runs-on: ubuntu-latest
