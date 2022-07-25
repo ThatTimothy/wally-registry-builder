@@ -27,6 +27,8 @@ Because the frontend relies on env variables (for the api) at runtime, the front
 
 To use the frontend, you will need to install [node](https://nodejs.org/).
 
+First, set the `WALLY_API_URL` environment variable to the url for the backend you just setup.
+
 To build the frontend, navigate to the `wally-registry-frontend` folder and run:
 
 ```bash
