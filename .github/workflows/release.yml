@@ -1,0 +1,60 @@
+on:
+  schedule: 
+    - cron: "0/15 * * * *"
+
+  workflow_dispatch:
+
+jobs:
+  check-commit:
+    runs-on: ubuntu-latest
+
+    outputs:
+      hash: ${{ steps.get-hash.outputs.hash }}
+      name: ${{ steps.get-name.outputs.name }}
+      changed: ${{ steps.check-change.outputs.cache-hit == 'false' }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with: 
+          repository: 'UpliftGames/wally'
+          path: wally
+      - name: Get latest commit hash
+        id: get-hash
+        run: |
+          cd wally
+          echo "::set-output name=hash::$(git rev-parse --verify HEAD)"
+          cd ..
+          echo "${{ steps.get-hash.outputs.hash }}" > hash.txt
+      - name: Get latest commit name
+        id: get-name
+        run: |
+          cd wally
+          
+          echo "::set-output name=name::$(git log -1 --format=%s)"
+      - name: Check for change
+        id: check-change
+        uses: actions/cache@v3
+        with:
+          path: hash.txt
+          key: hash
+
+  create-release:
+    needs: ["check-commit"]
+    name: Create Release
+    runs-on: ubuntu-latest
+    outputs:
+      upload-url: ${{ steps.create-release.outputs.upload_url }}
+    steps:
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ needs.check-commit.outputs.hash }}
+          release_name: ${{ needs.check-commit.outputs.name }}
+          draft: true
+          prerelease: false
+
+
+

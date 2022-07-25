@@ -19,7 +19,7 @@ Simply download the release you need from [the releases](https://github.com/That
 
 <summary>How often are newer versions checked?</summary>
 
-Every hour, but may vary based on GitHub's Action Runners' availability
+Every 15 minutes, but may vary based on GitHub's Action Runners' availability
 
 </details>
 
