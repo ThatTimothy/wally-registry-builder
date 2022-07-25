@@ -138,11 +138,11 @@ jobs:
         run: |
           mkdir staging
           if [ "${{ matrix.runs-on }}" = "windows-latest" ]; then
-            cp "wally-registry" staging/
+            cp wally-registry/ staging/ -r
             cd staging
             7z a ../release.zip *
           else
-            cp "wally-registry" staging/
+            cp wally-registry/ staging/ -r
             cd staging
             zip ../release.zip *
           fi
