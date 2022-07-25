@@ -140,7 +140,6 @@ jobs:
           if [ "${{ matrix.runs-on }}" = "windows-latest" ]; then
             7z a ../release.zip * -r
           else
-            cd staging
             zip ../release.zip * -r
           fi
       - name: Prepare asset name
