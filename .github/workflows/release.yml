@@ -127,7 +127,7 @@ jobs:
 
       - name: Build backend
         run: |
-          cd wally-registry-backend
+          cd wally/wally-registry-backend
           cargo build --release
 
           cd ..
