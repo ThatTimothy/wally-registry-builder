@@ -150,7 +150,7 @@ jobs:
         shell: bash
         run: |
           echo "ASSET_NAME=wally-registry-${{ needs.check-commit.outputs.hash }}-${{ matrix.label }}-${{ matrix.target }}" >> $GITHUB_ENV
-      - name: Upload Archive to Release
+      - name: Upload archive to release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
