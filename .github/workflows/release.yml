@@ -136,13 +136,10 @@ jobs:
       - name: Create release archive
         shell: bash
         run: |
-          mkdir staging
+          cd wally-registry
           if [ "${{ matrix.runs-on }}" = "windows-latest" ]; then
-            cp wally-registry/ staging/ -r
-            cd staging
             7z a ../release.zip * -r
           else
-            cp wally-registry/ staging/ -r
             cd staging
             zip ../release.zip * -r
           fi
