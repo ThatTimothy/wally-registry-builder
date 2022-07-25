@@ -58,5 +58,111 @@ jobs:
           draft: true
           prerelease: false
 
+  build:
+    needs: ["check-commit", "create-release"]
+    strategy:
+      fail-fast: false
+      matrix:
+        # https://doc.rust-lang.org/rustc/platform-support.html
+        # Build tier 1
+        include:
+          - label: 64-bit-linux
+            target: x86_64-unknown-linux-gnu
+            runs-on: ubuntu-latest
+          - label: 32-bit-linux
+            target: i686-unknown-linux-gnu
+            runs-on: ubuntu-latest
+          - label: arm64-linux
+            target: aarch64-unknown-linux-gnu
+            runs-on: ubuntu-latest
+          - label: 64-bit-windows
+            target: x86_64-pc-windows-msvc
+            runs-on: windows-latest
+          - label: 32-bit-windows
+            target: i686-pc-windows-msvc
+            runs-on: windows-latest
+          - label: 64-bit-macos
+            target: x86_64-apple-darwin
+            runs-on: macos-latest
 
+    name: Build (${{ matrix.target }})
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: wally
+          repository: UpliftGames/wally
+          submodules: true
 
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.5
+
+      - name: Setup rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+          override: true
+          profile: minimal
+
+      - name: Prepare release asset
+        run: |
+          mkdir wally-registry
+          cd wally-registry
+          mkdir frontend
+          mkdir backend
+          
+
+      - name: Build frontend
+        run: |
+          cd wally/wally-registry-frontend
+          npm install
+          npm run build
+
+          cp build/server/server.js ../../wally/registry/frontend
+          
+
+      - name: Build backend
+        run: |
+          cd wally-registry-backend
+          cargo build --release
+
+          cd ..
+
+          cp target/release/wally-registry-backend ../../wally/registry/backend/launch
+          cp wally-registry-backend/Rocket.toml ../../wally/registry/backend/Rocket.toml
+
+      - name: Create Release Archive
+        shell: bash
+        run: |
+          mkdir staging
+          if [ "${{ matrix.runs-on }}" = "windows-latest" ]; then
+            cp "wally-registry" staging/
+            cd staging
+            7z a ../release.zip *
+          else
+            cp "wally-registry" staging/
+            cd staging
+            zip ../release.zip *
+          fi
+      - name: Prepare Asset Name
+        shell: bash
+        run: |
+          echo "ASSET_NAME=wally-registry-${{ needs.check-commit.outputs.hash }}-${{ matrix.label }}-${{ matrix.target }}" >> $GITHUB_ENV
+      - name: Upload Archive to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: release.zip
+          asset_name: ${{ env.ASSET_NAME }}.zip
+          asset_content_type: application/octet-stream
+
+      - name: Upload Archive as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.ASSET_NAME }}.zip
+          path: release.zip
