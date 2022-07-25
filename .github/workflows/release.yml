@@ -124,7 +124,7 @@ jobs:
 
           cd ../../
 
-          cp wally/wally-registry-frontend/* wally-registry/frontend
+          cp -r wally/wally-registry-frontend/* wally-registry/frontend
           
 
       - name: Build backend
