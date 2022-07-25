@@ -108,37 +108,41 @@ jobs:
           override: true
           profile: minimal
 
-      - name: Prepare release asset
-        run: |
-          mkdir wally-registry
-          cd wally-registry
-          mkdir frontend
-          mkdir backend
-          
-
       - name: Build frontend
         run: |
           cd wally/wally-registry-frontend
           npm install
           npm run build
-
-          cd ../../
-
-          cp -r wally/wally-registry-frontend/* wally-registry/frontend
-          
+          rm ../node_modules
 
       - name: Build backend
         run: |
           cd wally/wally-registry-backend
           cargo build --release
 
-          cp ../target/release/wally-registry-backend ../../wally-registry/backend/launch
-          cp Rocket.toml ../../wally-registry/backend/Rocket.toml
+      - name: Prepare assets for release archive
+        shell: bash
+        run: |
+          mkdir release
+
+          # Front-end
+          cp -r wally/wally-registry-frontend release
+
+          # Back-end
+          mkdir release/wally-registry-backend
+          cp -r wally/wally-registry-backend/Rocket.toml release/wally-registry-backend/Rocket.toml
+
+          if [ "${{ matrix.runs-on }}" = "windows-latest" ]; then
+            cp -r wally/target/wally-registry-backend.exe release/wally-registry-backend/launch.exe
+          else
+            cp -r wally/target/wally-registry-backend release/wally-registry-backend/launch
+          fi
 
       - name: Create release archive
         shell: bash
         run: |
-          cd wally-registry
+          cd release
+
           if [ "${{ matrix.runs-on }}" = "windows-latest" ]; then
             7z a ../release.zip * -r
           else
