@@ -125,13 +125,13 @@ jobs:
           cp build/server/server.js ../../wally-registry/frontend
           
 
-      - name: Build backend
-        run: |
-          cd wally/wally-registry-backend
-          cargo build --release
+      # - name: Build backend
+      #   run: |
+      #     cd wally/wally-registry-backend
+      #     cargo build --release
 
-          cp ../target/release/wally-registry-backend ../../wally-registry/backend/launch
-          cp Rocket.toml ../../wally-registry/backend/Rocket.toml
+      #     cp ../target/release/wally-registry-backend ../../wally-registry/backend/launch
+      #     cp Rocket.toml ../../wally-registry/backend/Rocket.toml
 
       - name: Create release archive
         shell: bash
