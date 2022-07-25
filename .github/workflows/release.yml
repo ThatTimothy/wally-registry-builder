@@ -95,11 +95,6 @@ jobs:
           repository: UpliftGames/wally
           submodules: true
 
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14.5
-
       - name: Setup rust toolchain
         uses: actions-rs/toolchain@v1
         with:
