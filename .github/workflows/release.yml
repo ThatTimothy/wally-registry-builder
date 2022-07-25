@@ -113,7 +113,7 @@ jobs:
           cd wally/wally-registry-frontend
           npm install
           npm run build
-          rm ../node_modules
+          rm node_modules -r
 
       - name: Build backend
         run: |
