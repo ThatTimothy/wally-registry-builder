@@ -8,6 +8,7 @@ name: Release
 
 jobs:
   check-commit:
+    name: Check commit
     runs-on: ubuntu-latest
 
     outputs:
@@ -42,12 +43,12 @@ jobs:
 
   create-release:
     needs: ["check-commit"]
-    name: Create Release
+    name: Create release
     runs-on: ubuntu-latest
     outputs:
       upload-url: ${{ steps.create-release.outputs.upload_url }}
     steps:
-      - name: Create Release
+      - name: Create release
         id: create-release
         uses: actions/create-release@v1
         env:
