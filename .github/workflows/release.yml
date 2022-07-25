@@ -122,7 +122,9 @@ jobs:
           npm install
           npm run build
 
-          cp build/server/server.js ../../wally-registry/frontend/server.js
+          cd ../../
+
+          cp wally/wally-registry-frontend/* wally-registry/frontend
           
 
       # - name: Build backend
