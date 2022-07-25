@@ -140,11 +140,11 @@ jobs:
           if [ "${{ matrix.runs-on }}" = "windows-latest" ]; then
             cp wally-registry/ staging/ -r
             cd staging
-            7z a ../release.zip *
+            7z a ../release.zip * -r
           else
             cp wally-registry/ staging/ -r
             cd staging
-            zip ../release.zip *
+            zip ../release.zip * -r
           fi
       - name: Prepare asset name
         shell: bash
