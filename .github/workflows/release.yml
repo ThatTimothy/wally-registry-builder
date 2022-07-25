@@ -108,13 +108,6 @@ jobs:
           override: true
           profile: minimal
 
-      - name: Build frontend
-        run: |
-          cd wally/wally-registry-frontend
-          npm install
-          npm run build
-          rm -r node_modules
-
       - name: Build backend
         run: |
           cd wally/wally-registry-backend
