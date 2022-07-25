@@ -135,7 +135,7 @@ jobs:
           cp target/release/wally-registry-backend ../../wally/registry/backend/launch
           cp wally-registry-backend/Rocket.toml ../../wally/registry/backend/Rocket.toml
 
-      - name: Create Release Archive
+      - name: Create release archive
         shell: bash
         run: |
           mkdir staging
@@ -148,7 +148,7 @@ jobs:
             cd staging
             zip ../release.zip *
           fi
-      - name: Prepare Asset Name
+      - name: Prepare asset name
         shell: bash
         run: |
           echo "ASSET_NAME=wally-registry-${{ needs.check-commit.outputs.hash }}-${{ matrix.label }}-${{ matrix.target }}" >> $GITHUB_ENV
@@ -162,7 +162,7 @@ jobs:
           asset_name: ${{ env.ASSET_NAME }}.zip
           asset_content_type: application/octet-stream
 
-      - name: Upload Archive as Artifact
+      - name: Upload archive as artifact
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.ASSET_NAME }}.zip
