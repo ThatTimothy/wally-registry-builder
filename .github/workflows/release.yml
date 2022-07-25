@@ -133,9 +133,9 @@ jobs:
           cp -r wally/wally-registry-backend/Rocket.toml release/wally-registry-backend/Rocket.toml
 
           if [ "${{ matrix.runs-on }}" = "windows-latest" ]; then
-            cp -r wally/target/wally-registry-backend.exe release/wally-registry-backend/launch.exe
+            cp -r wally/wally-registry-backend/target/wally-registry-backend.exe release/wally-registry-backend/launch.exe
           else
-            cp -r wally/target/wally-registry-backend release/wally-registry-backend/launch
+            cp -r wally/wally-registry-backend/target/wally-registry-backend release/wally-registry-backend/launch
           fi
 
       - name: Create release archive
