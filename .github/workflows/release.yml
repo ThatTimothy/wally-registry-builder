@@ -122,7 +122,7 @@ jobs:
           npm install
           npm run build
 
-          cp build/server/server.js ../../wally/registry/frontend
+          cp build/server/server.js ../../wally-registry/frontend
           
 
       - name: Build backend
@@ -132,8 +132,8 @@ jobs:
 
           cd ..
 
-          cp target/release/wally-registry-backend ../../wally/registry/backend/launch
-          cp wally-registry-backend/Rocket.toml ../../wally/registry/backend/Rocket.toml
+          cp target/release/wally-registry-backend ../../wally-registry/backend/launch
+          cp wally-registry-backend/Rocket.toml ../../wally-registry/backend/Rocket.toml
 
       - name: Create release archive
         shell: bash
