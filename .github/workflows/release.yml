@@ -3,6 +3,12 @@ on:
   #   - cron: "*/15 * * * *"
 
   workflow_dispatch:
+    inputs:
+      force:
+        type: boolean
+        description: "Create release even if already created"
+        required: false
+        default: false
 
 name: Release
 
@@ -43,6 +49,7 @@ jobs:
 
   create-release:
     needs: ["check-commit"]
+    if: needs.check-commit.changed == 'true' || github.event.force
     name: Create release
     runs-on: ubuntu-latest
     outputs:
