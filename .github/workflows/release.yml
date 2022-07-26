@@ -56,6 +56,12 @@ jobs:
       upload-url: ${{ steps.create-release.outputs.upload_url }}
       id: ${{ steps.create-release.outputs.id }}
     steps:
+      - uses: actions/checkout@v3
+      - name: Create tag
+        id: create-tag
+        run: |
+          git tag ${{ needs.check-commit.outputs.hash }}
+          git push origin
       - name: Create release
         id: create-release
         uses: actions/create-release@v1
