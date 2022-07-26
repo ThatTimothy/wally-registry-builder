@@ -32,10 +32,11 @@ jobs:
         id: get-hash
         run: |
           cd wally
-          echo "::set-output name=hash::$(git rev-parse --verify HEAD)"
+          HASH=$(git rev-parse --verify HEAD)
+          echo "::set-output name=hash::$HASH"
           echo "::set-output name=short-hash::$(git rev-parse --short --verify HEAD)"
           cd ..
-          echo "${{ steps.get-hash.outputs.hash }}" > hash.txt
+          echo $HASH > hash.txt
       - name: Get latest commit name
         id: get-name
         run: |
