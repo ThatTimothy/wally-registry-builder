@@ -49,7 +49,7 @@ jobs:
 
   create-release:
     needs: ["check-commit"]
-    if: needs.check-commit.changed == 'true' || github.event.force
+    if: needs.check-commit.changed == 'true' || github.event.inputs.force == 'true'
     name: Create release
     runs-on: ubuntu-latest
     outputs:
