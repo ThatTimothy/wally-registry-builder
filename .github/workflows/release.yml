@@ -54,6 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       upload-url: ${{ steps.create-release.outputs.upload_url }}
+      id: ${{ steps.create-release.outputs.id }}
     steps:
       - name: Create release
         id: create-release
@@ -162,3 +163,19 @@ jobs:
         with:
           name: ${{ env.ASSET_NAME }}.zip
           path: release.zip
+  publish-release:
+    needs: ["create-release", "build"]
+    name: Publish release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish Release
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: ${{ needs.create-release.outputs.id }},
+              draft: false
+            });
