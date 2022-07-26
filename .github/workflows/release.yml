@@ -62,8 +62,9 @@ jobs:
       - name: Create tag
         id: create-tag
         run: |
-          echo "::set-output name=tag-name::original-commit-${{ needs.check-commit.outputs.hash }}"
-          git tag ${{ steps.create-tag.outputs.tag-name }}
+          TAG_NAME=original-commit-${{ needs.check-commit.outputs.hash }}
+          echo "::set-output name=tag-name::$TAG_NAME"
+          git tag $TAG_NAME
           git push origin --tags
       - name: Create release
         id: create-release
