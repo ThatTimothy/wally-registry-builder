@@ -77,6 +77,10 @@ jobs:
           release_name: ${{ needs.check-commit.outputs.name }}
           draft: true
           prerelease: false
+          body: |
+            Original commit: UpliftGames/wally@${{ needs.check-commit.outputs.hash }}
+
+            For directions on using this release, please see the [Usage section in the README](https://github.com/ThatTimothy/wally-registry-builder#usage).
 
   build:
     needs: ["check-commit", "create-release"]
