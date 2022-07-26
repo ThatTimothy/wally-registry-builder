@@ -61,7 +61,7 @@ jobs:
         id: create-tag
         run: |
           git tag ${{ needs.check-commit.outputs.hash }}
-          git push origin
+          git push origin --tags
       - name: Create release
         id: create-release
         uses: actions/create-release@v1
